@@ -1,8 +1,11 @@
-import 'package:zartech/core/util/utils.dart';
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zartech/core/util/utils.dart';
 
 import '../router.gr.dart';
 
@@ -12,7 +15,8 @@ String client_id =
 GoogleSignIn? _googleSignIn;
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +43,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      googleSignIn(context);
+                      googleSignIn(context, _prefs);
                     },
                     child: Container(
                       width: 169,
@@ -84,7 +88,7 @@ class LoginPage extends StatelessWidget {
                     height: 10,
                   ),
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       AutoRouter.of(context).push(HomeRoute());
                     },
                     child: Container(
@@ -94,30 +98,14 @@ class LoginPage extends StatelessWidget {
                           color: Colors.green,
                           borderRadius: BorderRadius.all(Radius.circular(30))),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Container(
-                            height: 35,
-                            margin: const EdgeInsets.all(4),
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(30)),
-                          ),
-                          const Expanded(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text('Phone',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w300,
-                                      fontFamily: 'Gilroy-Medium')),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 32,
-                          ),
+                          const Text('Login',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300,
+                                  fontFamily: 'Gilroy-Medium')),
                         ],
                       ),
                     ),
@@ -145,21 +133,64 @@ class LoginPage extends StatelessWidget {
     }
   }
 
-  void googleSignIn(BuildContext context) {
-    _googleSignIn?.signIn().then((result) {
+  void googleSignIn(BuildContext context, Future<SharedPreferences> prefs) {
+    _googleSignIn?.signIn().then((result) async {
+      var prefs = await _prefs;
       log(' googleSignIn -->> ${result.toString()}', tag);
-      result?.authentication.then((value) {
+      print(' googleSignIn -->> ${result.toString()} $tag');
+      await result?.authentication.then((value) {
         log(' googleSignIn accessToken -->> ${value.accessToken}', tag);
+        print(' googleSignIn accessToken -->> ${value.accessToken} $tag');
         log(' googleSignIn idToken -->> ${value.idToken}', tag);
-        if ((value.idToken ?? '').isNotEmpty) {}
+        print(' googleSignIn idToken -->> ${value.idToken} $tag');
+        if ((value.idToken ?? '').isNotEmpty) {
+          prefs
+            ..setString('name', result?.displayName ?? 'User Name')
+            ..setString('email', result?.email ?? 'User Email Id')
+            ..setString('userid', result.id!)
+            ..setString('image', result?.photoUrl??'');
+          AutoRouter.of(context).push(HomeRoute());
+        }
       }).onError((error, stackTrace) {
         print(error);
         print(stackTrace);
+        showFailureDialog(
+            context, 'Google Authentication failed, Please try again later');
       });
     }).onError((error, stackTrace) {
       print('ERROR');
       print(error);
       print(stackTrace);
+      showFailureDialog(
+          context, 'Google Authentication failed, Please try again later');
     });
   }
+}
+
+Future<void> showFailureDialog(BuildContext _context, String message) async {
+  return showDialog<void>(
+    context: _context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Message'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(message),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Ok'),
+            onPressed: () {
+              print('close dialogue');
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

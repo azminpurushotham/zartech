@@ -17,7 +17,9 @@ class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() {
+    return _HomePageState();
+  }
 }
 
 class _HomePageState extends State<HomePage> {
@@ -27,7 +29,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     bloc.add(GetData());
-    print('initState');
+    print('initState ***** ');
     super.initState();
   }
 

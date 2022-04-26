@@ -1,6 +1,23 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zartech/router.gr.dart';
 
-class NavBar extends StatelessWidget {
+late SharedPreferences prefs;
+String userName = '', emailId = '', userId = '', image = '';
+
+class NavBar extends StatefulWidget {
+  @override
+  State<NavBar> createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -31,24 +48,24 @@ class NavBar extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(80),
                           child: Image.network(
-                            'https://i.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+                            image,
                             fit: BoxFit.cover,
                             width: 80,
                             height: 80,
                           ),
                         ),
                         const SizedBox(height: 20),
-                        const Text('User Name',
-                            style: TextStyle(
+                        Text(userName,
+                            style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600)),
                         const SizedBox(
                           height: 10,
                         ),
-                        const Text('User Name',
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 10)),
+                        Text(emailId,
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 10)),
                       ],
                     ),
                   ),
@@ -56,15 +73,29 @@ class NavBar extends StatelessWidget {
               ],
             ),
           ),
-          const ListTile(
-            title: Text(
-              'Log out',
-              style: TextStyle(color: Colors.black38, fontSize: 15),
+          ListTile(
+            title: InkWell(
+              onTap: () async {
+                await prefs.clear();
+                await AutoRouter.of(context).push(LoginRoute());
+              },
+              child: const Text(
+                'Log out',
+                style: TextStyle(color: Colors.black38, fontSize: 15),
+              ),
             ),
-            leading: Icon(Icons.logout),
+            leading: const Icon(Icons.logout),
           )
         ],
       ),
     );
+  }
+
+  Future<void> init() async {
+    prefs = await SharedPreferences.getInstance();
+    userName = prefs.getString('name')!;
+    emailId = prefs.getString('email')!;
+    userId = prefs.getString('userid')!;
+    image = prefs.getString('image')!;
   }
 }

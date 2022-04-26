@@ -1,4 +1,4 @@
-package com.example.image_list
+package com.example.azmin
 
 import io.flutter.embedding.android.FlutterActivity
 

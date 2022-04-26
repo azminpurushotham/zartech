@@ -31,8 +31,10 @@ class AppRouter extends _i5.RootStackRouter {
           routeData: routeData, child: const _i1.SplashPage());
     },
     LoginRoute.name: (routeData) {
+      final args = routeData.argsAs<LoginRouteArgs>(
+          orElse: () => const LoginRouteArgs());
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.LoginPage());
+          routeData: routeData, child: _i2.LoginPage(key: args.key));
     },
     HomeRoute.name: (routeData) {
       final args =
@@ -67,10 +69,23 @@ class SplashRoute extends _i5.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.LoginPage]
-class LoginRoute extends _i5.PageRouteInfo<void> {
-  const LoginRoute() : super(LoginRoute.name, path: '/login-page');
+class LoginRoute extends _i5.PageRouteInfo<LoginRouteArgs> {
+  LoginRoute({_i7.Key? key})
+      : super(LoginRoute.name,
+            path: '/login-page', args: LoginRouteArgs(key: key));
 
   static const String name = 'LoginRoute';
+}
+
+class LoginRouteArgs {
+  const LoginRouteArgs({this.key});
+
+  final _i7.Key? key;
+
+  @override
+  String toString() {
+    return 'LoginRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

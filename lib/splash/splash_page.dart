@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:zartech/core/util/utils.dart';
-import 'package:zartech/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zartech/core/util/utils.dart';
+import 'package:zartech/router.gr.dart';
 
 final String tag = 'SplashPage';
 var count = 0;
@@ -29,14 +30,19 @@ class SplashPage extends StatelessWidget {
     );
   }
 
-  void goHomePage(BuildContext context) {
+  Future<void> goHomePage(BuildContext context) async {
     print('** goHome');
     log('goHomePage', tag);
     if (count == 0) {
-      Timer(const Duration(seconds: 3),
-          () => AutoRouter.of(context).push(const LoginRoute()));
-      // Timer(const Duration(seconds: 3),
-      //      () => AutoRouter.of(context).push(const SignUpRoute()));
+      Timer(const Duration(seconds: 3), () async {
+        var pref = await SharedPreferences.getInstance();
+        var id = pref.getString('userid') ?? '';
+        if (id.isEmpty) {
+          await AutoRouter.of(context).push(LoginRoute());
+        } else {
+          await AutoRouter.of(context).push(HomeRoute());
+        }
+      });
     }
     count++;
   }

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.image_list">
+    package="com.example.azmin">
    <application
-        android:label="image_list"
+        android:label="azmin"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

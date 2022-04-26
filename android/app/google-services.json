@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "329562797258",
+    "project_id": "mowe-b0474",
+    "storage_bucket": "mowe-b0474.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329562797258:android:5155b3a3618b89b973b033",
+        "android_client_info": {
+          "package_name": "com.mowe.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "329562797258-evbi7anv1smeoh3f3jocg7evvhh268da.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mowe.app",
+            "certificate_hash": "a851db7c58ec0ee4d2d54e540d05bbab8f8b5fd0"
+          }
+        },
+        {
+          "client_id": "329562797258-hr70efhr40kpjh931qfj5nvuped2mdje.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mowe.app",
+            "certificate_hash": "f4fa3775eedf0a1ed2dc8871cff788795e59351d"
+          }
+        },
+        {
+          "client_id": "329562797258-rikdrk38jfp6fnis1vfifferaft28u8i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mowe.app",
+            "certificate_hash": "090e165452ffb66e144cf00894b87e88167f872b"
+          }
+        },
+        {
+          "client_id": "329562797258-ilv5skmmlej6ehhkvl14u3o6o2ra79fa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB79A0IfqzeIGWKIu7_2DOrZPw8tXoVAKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "329562797258-ilv5skmmlej6ehhkvl14u3o6o2ra79fa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "329562797258-brvueeod0krpsmqsisr752pa7upi6taj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dreamkatcher.mowe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

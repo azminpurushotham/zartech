@@ -17,6 +17,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<GetData>((event, emit) async {
       log('fetchList', tag);
       try {
+        emit(HomeInitial());
         emit(HomeLoading());
         print('fetchList $tag');
         var res = await repository.fetchItemsOnline('5dfccffc310000efc8d2c1ad');
